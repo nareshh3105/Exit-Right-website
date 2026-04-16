@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { AppShell } from "@/components/AppShell";
@@ -9,59 +8,64 @@ import { Station } from "@/lib/types";
 
 export default function StationSelectorPage() {
   const [stations, setStations] = useState<Station[]>([]);
-  const [selected, setSelected] = useState("");
-  const [status, setStatus] = useState("");
-  const [isSaved, setIsSaved] = useState(false);
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     getStations()
       .then(setStations)
-      .catch(() => setStatus("Unable to fetch stations"));
+      .catch(() => setStations([]));
   }, []);
 
-  function saveSelection() {
-    const station = stations.find((s) => s.id === selected);
-    if (!station) {
-      setStatus("Pick a station first");
-      setIsSaved(false);
-      return;
-    }
-    window.localStorage.setItem("exit_right_station", JSON.stringify(station));
-    setStatus(`Selected ${station.name}`);
-    setIsSaved(true);
-  }
+  const filteredStations = stations.filter((station) => station.name.toLowerCase().includes(query.toLowerCase()));
 
   return (
     <AppShell>
-      <section className="max-w-xl rounded-3xl bg-white p-6 shadow-soft">
-        <h1 className="mb-4 text-2xl font-bold text-brand-900">Select Metro Station</h1>
-        <select
-          value={selected}
-          onChange={(e) => {
-            setSelected(e.target.value);
-            setIsSaved(false);
-          }}
-          className="mb-4 w-full rounded-xl border border-brand-100 px-4 py-3 outline-none focus:border-brand-500"
-        >
-          <option value="">Choose a station</option>
-          {stations.map((station) => (
-            <option key={station.id} value={station.id}>
-              {station.name} ({station.line_code})
-            </option>
-          ))}
-        </select>
-        <button onClick={saveSelection} className="rounded-xl bg-brand-700 px-4 py-2 font-semibold text-white">
-          Save Station
-        </button>
-        {status ? <p className="mt-3 text-sm text-slate-700">{status}</p> : null}
-        {isSaved ? (
-          <Link
-            href="/destination-input"
-            className="mt-4 inline-flex rounded-xl bg-brand-900 px-4 py-2 font-semibold text-white"
-          >
-            Next
-          </Link>
-        ) : null}
+      <section className="mx-auto max-w-3xl space-y-6">
+        <div className="relative overflow-hidden rounded-3xl border border-[#e6e3e2] bg-[#fcf9f8] p-6 shadow-soft">
+          <h1 className="mb-5 text-4xl font-extrabold tracking-tight text-[#000666]">Station Selection</h1>
+          <div className="relative">
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">🔎</span>
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search for Metro Station"
+              className="ui-input pl-11 text-base"
+            />
+          </div>
+          <p className="mt-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Open Network Map</p>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-2">
+          <article className="ui-card p-5">
+            <p className="mb-3 text-[10px] font-black uppercase tracking-widest text-slate-500">Recent Stations</p>
+            <div className="space-y-3">
+              <p className="font-bold text-[#1b1c1c]">Hauz Khas</p>
+              <p className="font-bold text-[#1b1c1c]">Rajiv Chowk</p>
+            </div>
+          </article>
+          <article className="ui-card p-5">
+            <p className="mb-3 text-[10px] font-black uppercase tracking-widest text-slate-500">Favorites</p>
+            <div className="space-y-3">
+              <p className="font-bold text-[#1b1c1c]">Cyber City</p>
+              <p className="font-bold text-[#1b1c1c]">Green Park</p>
+            </div>
+          </article>
+        </div>
+
+        <section>
+          <h2 className="mb-3 text-[10px] font-black uppercase tracking-widest text-slate-500">All Stations</h2>
+          <div className="space-y-2">
+            {filteredStations.slice(0, 10).map((station) => (
+              <article key={station.id} className="ui-card flex items-center justify-between p-4">
+                <div>
+                  <p className="font-semibold text-[#1b1c1c]">{station.name}</p>
+                  <p className="text-xs text-slate-500">{station.line_code} Line</p>
+                </div>
+                <span className="text-slate-400">›</span>
+              </article>
+            ))}
+          </div>
+        </section>
       </section>
     </AppShell>
   );

@@ -12,12 +12,13 @@ const cards = [
 export default function DashboardPage() {
   return (
     <AppShell>
-      <h1 className="mb-6 text-3xl font-extrabold text-brand-900">Commuter Dashboard</h1>
+      <h1 className="mb-2 text-4xl font-extrabold tracking-tight text-[#000666]">Where to?</h1>
+      <p className="mb-6 text-sm text-slate-600">Pick a step to continue your trip flow.</p>
       <section className="grid gap-4 md:grid-cols-2">
         {cards.map((card) => (
-          <Link key={card.href} href={card.href} className="rounded-2xl border border-brand-100 bg-white p-5 shadow-soft transition hover:-translate-y-1">
-            <h2 className="mb-2 text-lg font-bold text-brand-900">{card.title}</h2>
-            <p className="text-sm text-slate-700">{card.text}</p>
+          <Link key={card.href} href={card.href} className="ui-card p-5 transition hover:-translate-y-0.5">
+            <h2 className="mb-2 text-lg font-bold text-[#1b1c1c]">{card.title}</h2>
+            <p className="text-sm text-slate-600">{card.text}</p>
           </Link>
         ))}
       </section>

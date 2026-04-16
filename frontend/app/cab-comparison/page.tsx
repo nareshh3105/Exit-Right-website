@@ -45,16 +45,16 @@ export default function CabComparisonPage() {
   return (
     <AppShell>
       <section className="space-y-4">
-        <div className="rounded-2xl bg-white p-5 shadow-soft">
-          <h1 className="text-2xl font-bold text-brand-900">Cab Comparison</h1>
+        <div className="ui-card p-5">
+          <h1 className="text-3xl font-extrabold tracking-tight text-[#000666]">Cab Comparison</h1>
           <div className="mt-3 flex flex-wrap items-center gap-3">
             <input
               value={distanceKm}
               onChange={(e) => setDistanceKm(e.target.value)}
-              className="w-48 rounded-xl border border-brand-100 px-4 py-2"
+              className="ui-input w-48"
               placeholder="Distance (km)"
             />
-            <button onClick={runComparison} className="rounded-xl bg-brand-700 px-4 py-2 text-sm font-semibold text-white">
+            <button onClick={runComparison} className="ui-button-primary">
               Compare Providers
             </button>
           </div>

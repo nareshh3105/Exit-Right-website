@@ -1,115 +1,75 @@
-"use client";
-
 import Link from "next/link";
-import { useState } from "react";
 
 import { AppShell } from "@/components/AppShell";
-import { DestinationAutocomplete } from "@/components/DestinationAutocomplete";
+
+const recentJourneys = [
+  { title: "India Gate", subtitle: "Kartavya Path, New Delhi" },
+  { title: "Lotus Temple", subtitle: "Kalkaji, New Delhi" },
+  { title: "DLF Promenade", subtitle: "Vasant Kunj, New Delhi" },
+];
 
 export default function DestinationInputPage() {
-  const [turnInLocation, setTurnInLocation] = useState("");
-  const [lat, setLat] = useState("");
-  const [lng, setLng] = useState("");
-  const [status, setStatus] = useState("");
-  const [isSaved, setIsSaved] = useState(false);
-  const [inputMode, setInputMode] = useState<"manual" | "map">("manual");
-
-  function saveDestination() {
-    const parsedLat = Number(lat);
-    const parsedLng = Number(lng);
-    if (!turnInLocation || Number.isNaN(parsedLat) || Number.isNaN(parsedLng)) {
-      setStatus("Enter turn-in location and valid coordinates");
-      setIsSaved(false);
-      return;
-    }
-    window.localStorage.setItem(
-      "exit_right_destination",
-      JSON.stringify({
-        name: turnInLocation,
-        turn_in_location: turnInLocation,
-        lat: parsedLat,
-        lng: parsedLng,
-      }),
-    );
-    setStatus("Destination saved for recommendation");
-    setIsSaved(true);
-  }
-
   return (
     <AppShell>
-      <section className="max-w-2xl space-y-4 rounded-3xl bg-white p-6 shadow-soft">
-        <h1 className="text-2xl font-bold text-brand-900">Enter Destination</h1>
-        <div className="flex flex-wrap gap-2">
-          <button
-            type="button"
-            onClick={() => setInputMode("manual")}
-            className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-              inputMode === "manual"
-                ? "bg-brand-700 text-white"
-                : "bg-brand-100 text-brand-900 hover:bg-brand-200"
-            }`}
-          >
-            Enter Manually
-          </button>
-          <button
-            type="button"
-            onClick={() => setInputMode("map")}
-            className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-              inputMode === "map" ? "bg-brand-700 text-white" : "bg-brand-100 text-brand-900 hover:bg-brand-200"
-            }`}
-          >
-            Select on Map
-          </button>
+      <section className="mx-auto max-w-3xl space-y-6">
+        <div className="relative overflow-hidden rounded-3xl border border-[#e6e3e2] bg-[#fcf9f8] p-6 shadow-soft">
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#fcf9f8]/30 to-[#fcf9f8]" />
+          <div className="relative">
+            <h1 className="mb-5 text-5xl font-extrabold tracking-tight text-[#000666]">Where to?</h1>
+            <div className="relative">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">🔎</span>
+              <input placeholder="Enter destination or station" className="ui-input pl-11 text-base font-medium" />
+            </div>
+          </div>
         </div>
-        {inputMode === "map" ? (
-          <DestinationAutocomplete
-            onPlaceSelected={(place) => {
-              setTurnInLocation(place.name);
-              setLat(String(place.lat));
-              setLng(String(place.lng));
-              setStatus("Destination selected from map search");
-              setIsSaved(false);
-            }}
-          />
-        ) : null}
-        <input
-          value={turnInLocation}
-          onChange={(e) => {
-            setTurnInLocation(e.target.value);
-            setIsSaved(false);
-          }}
-          placeholder="Location to turn in"
-          className="w-full rounded-xl border border-brand-100 px-4 py-3 outline-none focus:border-brand-500"
-        />
-        <div className="grid gap-3 md:grid-cols-2">
-          <input
-            value={lat}
-            onChange={(e) => {
-              setLat(e.target.value);
-              setIsSaved(false);
-            }}
-            placeholder="Latitude"
-            className="rounded-xl border border-brand-100 px-4 py-3 outline-none focus:border-brand-500"
-          />
-          <input
-            value={lng}
-            onChange={(e) => {
-              setLng(e.target.value);
-              setIsSaved(false);
-            }}
-            placeholder="Longitude"
-            className="rounded-xl border border-brand-100 px-4 py-3 outline-none focus:border-brand-500"
-          />
-        </div>
-        <button onClick={saveDestination} className="rounded-xl bg-brand-700 px-4 py-2 font-semibold text-white">
-          Save Destination
-        </button>
-        {status ? <p className="text-sm text-slate-700">{status}</p> : null}
-        {isSaved ? (
-          <Link href="/recommendation" className="inline-flex rounded-xl bg-brand-900 px-4 py-2 font-semibold text-white">
-            Next
+
+        <article className="ui-card flex items-start gap-4 p-4">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#1a237e] text-white">💡</div>
+          <div>
+            <p className="text-sm font-bold text-[#000666]">Pro Tip</p>
+            <p className="text-xs text-slate-600">Sync your calendar for smarter route planning.</p>
+          </div>
+        </article>
+
+        <section>
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="text-xl font-bold text-[#1b1c1c]">Saved Places</h2>
+            <button className="text-xs font-bold uppercase tracking-wider text-[#000666]">Manage</button>
+          </div>
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="ui-card border-l-4 border-l-[#003909] p-5">
+              <p className="text-lg font-bold">Home</p>
+              <p className="text-sm text-slate-600">Dwarka Sector 10</p>
+            </div>
+            <div className="ui-card border-l-4 border-l-[#003909] p-5">
+              <p className="text-lg font-bold">Office</p>
+              <p className="text-sm text-slate-600">Cyber City</p>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2 className="mb-3 text-xl font-bold text-[#1b1c1c]">Recent Journeys</h2>
+          <div className="space-y-3">
+            {recentJourneys.map((item) => (
+              <div key={item.title} className="ui-card flex items-center justify-between p-4">
+                <div>
+                  <p className="font-bold text-[#1b1c1c]">{item.title}</p>
+                  <p className="text-xs text-slate-500">{item.subtitle}</p>
+                </div>
+                <span className="text-slate-400">↗</span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <div className="ui-card relative overflow-hidden bg-[#003909] p-6 text-white">
+          <h3 className="text-2xl font-bold">Go Green today?</h3>
+          <p className="mb-4 mt-1 max-w-sm text-sm text-[#d8f1e5]">E-rickshaws and Metro links are faster during peak hours.</p>
+          <Link href="/recommendation" className="inline-flex rounded-xl bg-[#a3f69c] px-5 py-2 text-sm font-bold text-[#002204]">
+            Find Electric Routes
           </Link>
-        ) : null}
+        </div>
       </section>
     </AppShell>
   );

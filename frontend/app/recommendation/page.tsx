@@ -41,9 +41,9 @@ export default function RecommendationPage() {
   return (
     <AppShell>
       <section className="space-y-5">
-        <div className="rounded-2xl bg-white p-5 shadow-soft">
-          <h1 className="mb-3 text-2xl font-bold text-brand-900">Recommendation</h1>
-          <button onClick={generateRecommendation} className="rounded-xl bg-brand-700 px-4 py-2 text-sm font-semibold text-white">
+        <div className="ui-card p-5">
+          <h1 className="mb-3 text-3xl font-extrabold tracking-tight text-[#000666]">Recommendation</h1>
+          <button onClick={generateRecommendation} className="ui-button-primary">
             {loading ? "Calculating..." : "Run Exit + Route Recommendation"}
           </button>
           {error ? <p className="mt-2 text-sm text-red-600">{error}</p> : null}
@@ -51,12 +51,12 @@ export default function RecommendationPage() {
 
         {result ? (
           <>
-            <article className="rounded-2xl border border-brand-100 bg-white p-5 shadow-soft">
-              <h2 className="text-xl font-bold text-brand-900">Best Exit Gate</h2>
-              <p className="mt-1 text-sm text-slate-700">
+            <article className="ui-card p-5">
+              <h2 className="text-xl font-bold text-[#1b1c1c]">Best Exit Gate</h2>
+              <p className="mt-1 text-sm text-slate-600">
                 {result.best_exit.gate_code} - {result.best_exit.gate_name}
               </p>
-              <p className="text-sm text-slate-700">Distance to destination: {result.best_exit.distance_km} km</p>
+              <p className="text-sm text-slate-600">Distance to destination: {result.best_exit.distance_km} km</p>
             </article>
 
             <section className="grid gap-4 md:grid-cols-2">
