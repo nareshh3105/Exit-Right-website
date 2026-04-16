@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: exit-right-api
+    env: docker
+    dockerfilePath: ./backend/Dockerfile
+    rootDir: .
+    plan: starter
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: APP_ENV
+        value: production
+      - key: OPENWEATHER_API_KEY
+        sync: false
+      - key: OPENROUTESERVICE_API_KEY
+        sync: false
+      - key: GOOGLE_PLACES_API_KEY
+        sync: false
+      - key: FRONTEND_BASE_URL
+        sync: false
+      - key: CORS_ALLOW_ORIGINS
+        sync: false
+      - key: SENTRY_DSN
+        sync: false

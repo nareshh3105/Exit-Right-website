@@ -1,0 +1,156 @@
+{
+  "city": "Chennai",
+  "stations": [
+    {
+      "name": "Guindy",
+      "line_code": "Blue",
+      "latitude": 13.0089,
+      "longitude": 80.2127,
+      "popularity_index": 0.82,
+      "exits": [
+        {
+          "gate_code": "G1",
+          "gate_name": "GST Road Exit",
+          "latitude": 13.0092,
+          "longitude": 80.2122,
+          "road_type": "main_road",
+          "lighting_score": 0.88
+        },
+        {
+          "gate_code": "G2",
+          "gate_name": "Industrial Estate Exit",
+          "latitude": 13.0084,
+          "longitude": 80.2133,
+          "road_type": "inner_road",
+          "lighting_score": 0.69
+        }
+      ]
+    },
+    {
+      "name": "Alandur",
+      "line_code": "Blue",
+      "latitude": 13.0046,
+      "longitude": 80.2013,
+      "popularity_index": 0.78,
+      "exits": [
+        {
+          "gate_code": "A1",
+          "gate_name": "Airport Link Exit",
+          "latitude": 13.0051,
+          "longitude": 80.201,
+          "road_type": "main_road",
+          "lighting_score": 0.84
+        },
+        {
+          "gate_code": "A2",
+          "gate_name": "Suburban Exit",
+          "latitude": 13.0042,
+          "longitude": 80.2019,
+          "road_type": "inner_road",
+          "lighting_score": 0.67
+        }
+      ]
+    },
+    {
+      "name": "Vadapalani",
+      "line_code": "Green",
+      "latitude": 13.0507,
+      "longitude": 80.2124,
+      "popularity_index": 0.75,
+      "exits": [
+        {
+          "gate_code": "V1",
+          "gate_name": "Forum Mall Exit",
+          "latitude": 13.0509,
+          "longitude": 80.2118,
+          "road_type": "main_road",
+          "lighting_score": 0.85
+        },
+        {
+          "gate_code": "V2",
+          "gate_name": "Arcot Road Exit",
+          "latitude": 13.0504,
+          "longitude": 80.2129,
+          "road_type": "main_road",
+          "lighting_score": 0.8
+        }
+      ]
+    },
+    {
+      "name": "Egmore",
+      "line_code": "Green",
+      "latitude": 13.0808,
+      "longitude": 80.2614,
+      "popularity_index": 0.86,
+      "exits": [
+        {
+          "gate_code": "E1",
+          "gate_name": "Railway Station Exit",
+          "latitude": 13.0812,
+          "longitude": 80.2618,
+          "road_type": "main_road",
+          "lighting_score": 0.9
+        },
+        {
+          "gate_code": "E2",
+          "gate_name": "Pantheon Road Exit",
+          "latitude": 13.0803,
+          "longitude": 80.2608,
+          "road_type": "main_road",
+          "lighting_score": 0.79
+        }
+      ]
+    },
+    {
+      "name": "CMBT",
+      "line_code": "Green",
+      "latitude": 13.0695,
+      "longitude": 80.2087,
+      "popularity_index": 0.88,
+      "exits": [
+        {
+          "gate_code": "C1",
+          "gate_name": "Bus Terminus Exit",
+          "latitude": 13.0698,
+          "longitude": 80.2092,
+          "road_type": "main_road",
+          "lighting_score": 0.87
+        },
+        {
+          "gate_code": "C2",
+          "gate_name": "100 Feet Road Exit",
+          "latitude": 13.0691,
+          "longitude": 80.2082,
+          "road_type": "main_road",
+          "lighting_score": 0.82
+        }
+      ]
+    }
+  ],
+  "cab_providers": [
+    {
+      "name": "Uber",
+      "base_fare": 70,
+      "per_km_rate": 17.5,
+      "demand_multiplier": 1.0
+    },
+    {
+      "name": "Ola",
+      "base_fare": 65,
+      "per_km_rate": 16.5,
+      "demand_multiplier": 1.0
+    },
+    {
+      "name": "Rapido",
+      "base_fare": 55,
+      "per_km_rate": 15,
+      "demand_multiplier": 1.0
+    },
+    {
+      "name": "Namma Yatri",
+      "base_fare": 60,
+      "per_km_rate": 15.8,
+      "demand_multiplier": 1.0
+    }
+  ]
+}
