@@ -101,9 +101,8 @@ async def lifespan(app: FastAPI):  # noqa: ARG001
     # Hard fail if production config is unsafe.
     settings.validate_production_config()
 
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-
+    # Tables are managed by Alembic migrations (run in start.sh before uvicorn).
+    # Do NOT call create_all here — it conflicts with Alembic-managed enum types on PostgreSQL.
     await seed_initial_data()
     logger.info("[Startup] EXIT RIGHT API ready  (env=%s)", settings.app_env)
     # ── App runs here ─────────────────────────────────────────────────────────
