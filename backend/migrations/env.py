@@ -30,8 +30,16 @@ from app.core.config import get_settings  # noqa: E402
 
 settings = get_settings()
 
+# Normalise the DATABASE_URL so Alembic always uses the asyncpg driver.
+# Railway / Supabase may provide plain "postgresql://" or "postgres://" URLs.
+_db_url = settings.database_url
+if _db_url.startswith("postgres://"):
+    _db_url = _db_url.replace("postgres://", "postgresql+asyncpg://", 1)
+elif _db_url.startswith("postgresql://"):
+    _db_url = _db_url.replace("postgresql://", "postgresql+asyncpg://", 1)
+
 # Inject the runtime DATABASE_URL into Alembic's config section.
-config.set_main_option("sqlalchemy.url", settings.database_url)
+config.set_main_option("sqlalchemy.url", _db_url)
 
 target_metadata = Base.metadata
 
