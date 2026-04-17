@@ -1,40 +1,62 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { AppShell } from "@/components/AppShell";
 import { recommendRoute } from "@/lib/api";
 import { RecommendationResponse } from "@/lib/types";
 
-const TRANSPORT_UI: Record<string, { icon: string; label: string; price: string; time: string; crowd: string; crowdColor: string }> = {
-  walking:     { icon: "🚶", label: "Walk",               price: "₹0",   time: "20 min", crowd: "LOW CROWD",      crowdColor: "#16a34a" },
-  shared_auto: { icon: "🛺", label: "Auto Rickshaw",       price: "₹40",  time: "5 min",  crowd: "HIGH CROWD",     crowdColor: "#ef4444" },
-  bus:         { icon: "🚌", label: "Metro Feeder Bus",    price: "₹10",  time: "15 min", crowd: "MODERATE CROWD", crowdColor: "#f97316" },
-  cab:         { icon: "🚕", label: "Cab",                 price: "₹120", time: "8 min",  crowd: "LOW CROWD",      crowdColor: "#16a34a" },
+const MODE_META: Record<string, { icon: string; label: string }> = {
+  walking:      { icon: "🚶", label: "Walk" },
+  shared_auto:  { icon: "🛺", label: "Auto Rickshaw" },
+  bus:          { icon: "🚌", label: "Metro Feeder Bus" },
+  cab:          { icon: "🚕", label: "Cab" },
 };
 
 export default function RecommendationPage() {
+  const router = useRouter();
   const [result, setResult] = useState<RecommendationResponse | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [stationName, setStationName] = useState("");
+  const [destName, setDestName] = useState("");
 
-  async function generateRecommendation() {
+  useEffect(() => {
+    const stationRaw = window.localStorage.getItem("exit_right_station");
+    const destRaw = window.localStorage.getItem("exit_right_destination");
+    if (stationRaw) {
+      try { setStationName(JSON.parse(stationRaw).name ?? ""); } catch { /* ignore */ }
+    }
+    if (destRaw) {
+      try { setDestName(JSON.parse(destRaw).name ?? ""); } catch { /* ignore */ }
+    }
+    // Auto-fetch if both are set
+    if (stationRaw && destRaw) {
+      void generateRecommendation(JSON.parse(stationRaw), JSON.parse(destRaw));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  async function generateRecommendation(
+    station?: { id: string; name: string },
+    destination?: { name: string; lat: number; lng: number }
+  ) {
     setLoading(true);
     setError("");
     setResult(null);
     try {
-      const stationRaw = window.localStorage.getItem("exit_right_station");
-      const destinationRaw = window.localStorage.getItem("exit_right_destination");
-      if (!stationRaw || !destinationRaw) {
-        throw new Error("Select station and destination first");
+      const stationData = station ?? JSON.parse(window.localStorage.getItem("exit_right_station") ?? "null");
+      const destData = destination ?? JSON.parse(window.localStorage.getItem("exit_right_destination") ?? "null");
+
+      if (!stationData || !destData) {
+        throw new Error("Please select station and destination first");
       }
-      const station = JSON.parse(stationRaw);
-      const destination = JSON.parse(destinationRaw);
       const data = await recommendRoute({
-        station_id: station.id,
-        destination_name: destination.name,
-        destination_lat: destination.lat,
-        destination_lng: destination.lng,
+        station_id: stationData.id,
+        destination_name: destData.name,
+        destination_lat: destData.lat,
+        destination_lng: destData.lng,
       });
       setResult(data);
     } catch (err) {
@@ -44,105 +66,84 @@ export default function RecommendationPage() {
     }
   }
 
-  const topMode = result?.transport_ranking?.[0];
-
   return (
     <AppShell>
       <div className="space-y-4">
-        {/* Recommended exit header */}
-        <div className="ui-card flex items-center justify-between p-4">
-          <div>
-            <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">
-              RECOMMENDED EXIT
-            </p>
-            <p className="text-3xl font-extrabold text-slate-900">
-              {result ? result.best_exit.gate_code : "GATE 2"}
-            </p>
+        {/* Trip summary header */}
+        <div className="ui-card p-4">
+          <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">
+            YOUR TRIP
+          </p>
+          <div className="mt-1 flex items-center gap-2 text-sm">
+            <span className="font-bold text-slate-800 truncate">{stationName || "—"}</span>
+            <span className="text-slate-400">→</span>
+            <span className="font-bold text-slate-800 truncate">{destName || "—"}</span>
           </div>
-          <div className="text-right">
-            <p className="text-xs text-slate-500">
-              {result ? result.best_exit.gate_name : "Towards Cyber Hub"}
-            </p>
+          {(!stationName || !destName) && (
             <button
-              onClick={generateRecommendation}
-              disabled={loading}
-              className="mt-2 rounded-xl px-4 py-2 text-xs font-bold text-white disabled:opacity-60"
-              style={{ background: "#1a237e" }}
+              onClick={() => router.push("/dashboard")}
+              className="mt-2 text-xs font-semibold underline"
+              style={{ color: "#1a237e" }}
             >
-              {loading ? "Calculating\u2026" : "Get Recommendation"}
+              ← Set station &amp; destination
+            </button>
+          )}
+        </div>
+
+        {/* Loading state */}
+        {loading && (
+          <div className="flex flex-col items-center gap-3 py-12">
+            <div
+              className="h-10 w-10 animate-spin rounded-full border-4 border-slate-200"
+              style={{ borderTopColor: "#1a237e" }}
+            />
+            <p className="text-sm text-slate-500">Calculating best route…</p>
+          </div>
+        )}
+
+        {/* Error */}
+        {error && !loading && (
+          <div className="rounded-xl bg-red-50 p-4">
+            <p className="text-sm text-red-600">{error}</p>
+            <button
+              onClick={() => generateRecommendation()}
+              className="mt-2 text-xs font-bold underline text-red-600"
+            >
+              Retry
             </button>
           </div>
-        </div>
+        )}
 
-        {error && <p className="rounded-xl bg-red-50 p-3 text-sm text-red-600">{error}</p>}
+        {/* Results */}
+        {result && !loading && (
+          <>
+            {/* Recommended exit */}
+            <div
+              className="flex items-center gap-4 rounded-2xl p-5 text-white"
+              style={{ background: "#1a237e" }}
+            >
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-widest text-blue-300">
+                  RECOMMENDED EXIT
+                </p>
+                <p className="text-4xl font-extrabold">{result.best_exit.gate_code}</p>
+                <p className="mt-0.5 text-sm text-blue-200">{result.best_exit.gate_name}</p>
+              </div>
+              <div className="ml-auto text-right">
+                <span className="rounded-full bg-orange-500 px-3 py-1 text-xs font-bold text-white">
+                  BEST ROUTE
+                </span>
+              </div>
+            </div>
 
-        {/* Dark map placeholder */}
-        <div
-          className="flex h-40 items-center justify-center rounded-2xl text-slate-500"
-          style={{
-            background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)",
-            backgroundImage:
-              "repeating-linear-gradient(0deg,transparent,transparent 20px,rgba(99,102,241,0.07) 20px,rgba(99,102,241,0.07) 21px),repeating-linear-gradient(90deg,transparent,transparent 20px,rgba(99,102,241,0.07) 20px,rgba(99,102,241,0.07) 21px)",
-          }}
-        >
-          <p className="text-xs font-semibold text-slate-500">[ Live Station Map ]</p>
-        </div>
-
-        {/* Station status */}
-        <div className="ui-card p-4">
-          <div className="mb-3 flex items-center justify-between">
-            <div>
-              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">
-                HAUZ KHAS STATUS
+            {/* Transport options */}
+            <section>
+              <p className="mb-2 text-[10px] font-black uppercase tracking-widest text-slate-400">
+                TRANSPORT OPTIONS
               </p>
-              <p className="text-xs text-slate-500">Real-time crowd analysis</p>
-            </div>
-            <span className="rounded-full bg-orange-100 px-2 py-0.5 text-[10px] font-bold text-orange-600">
-              BUSY
-            </span>
-          </div>
-          {/* CSS bar chart */}
-          <div className="flex items-end gap-1.5" style={{ height: 48 }}>
-            {[40, 60, 80, 95, 70, 50, 65].map((h, i) => (
-              <div
-                key={i}
-                className="flex-1 rounded-t"
-                style={{
-                  height: `${h}%`,
-                  background: h > 80 ? "#ef4444" : h > 60 ? "#f97316" : "#1a237e",
-                  opacity: 0.8,
-                }}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Eco score card */}
-        <div
-          className="flex items-center gap-4 rounded-2xl p-4 text-white"
-          style={{ background: "#16a34a" }}
-        >
-          <div className="flex-1">
-            <p className="text-[10px] font-black uppercase tracking-widest text-green-200">
-              ECO SCORE
-            </p>
-            <p className="text-3xl font-extrabold">85%</p>
-            <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-green-800">
-              <div className="h-full rounded-full bg-white" style={{ width: "85%" }} />
-            </div>
-          </div>
-          <span className="text-4xl">🌿</span>
-        </div>
-
-        {/* Transport Options */}
-        <section>
-          <p className="mb-2 text-[10px] font-black uppercase tracking-widest text-slate-400">
-            TRANSPORT OPTIONS
-          </p>
-          <div className="space-y-3">
-            {result
-              ? result.transport_ranking.map((option, index) => {
-                  const ui = TRANSPORT_UI[option.mode] ?? { icon: "🚗", label: option.mode, price: `₹${option.estimated_cost_inr}`, time: `${option.estimated_travel_time_min} min`, crowd: option.crowd_indicator, crowdColor: "#64748b" };
+              <div className="space-y-3">
+                {result.transport_ranking.map((option, index) => {
+                  const meta = MODE_META[option.mode] ?? { icon: "🚗", label: option.mode };
                   const isBest = index === 0;
                   return (
                     <div
@@ -155,95 +156,68 @@ export default function RecommendationPage() {
                       }
                     >
                       <div className="flex items-center gap-3">
-                        <span className="text-2xl">{ui.icon}</span>
+                        <span className="text-2xl">{meta.icon}</span>
                         <div className="flex-1">
-                          <div className="flex items-center gap-2">
-                            <p className={`font-bold ${isBest ? "text-white" : "text-slate-800"}`}>{ui.label}</p>
+                          <div className="flex flex-wrap items-center gap-2">
+                            <p className={`font-bold ${isBest ? "text-white" : "text-slate-800"}`}>
+                              {meta.label}
+                            </p>
                             {isBest && (
                               <span className="rounded-full px-2 py-0.5 text-[10px] font-bold text-white" style={{ background: "#f97316" }}>
                                 BEST CHOICE
                               </span>
                             )}
                           </div>
-                          <div className="mt-1 flex gap-3 text-xs">
-                            <span className={isBest ? "text-blue-200" : "text-slate-500"}>
-                              ₹{option.estimated_cost_inr} &bull; {option.estimated_travel_time_min} min
-                            </span>
-                          </div>
+                          <p className={`mt-0.5 text-xs ${isBest ? "text-blue-200" : "text-slate-500"}`}>
+                            ₹{option.estimated_cost_inr} &bull; {option.estimated_travel_time_min} min
+                          </p>
                         </div>
                         <span
                           className="rounded-full px-2 py-0.5 text-[10px] font-bold"
-                          style={{ background: ui.crowdColor + "22", color: ui.crowdColor }}
+                          style={
+                            isBest
+                              ? { background: "rgba(255,255,255,0.2)", color: "#fff" }
+                              : { background: "#f1f5f9", color: "#64748b" }
+                          }
                         >
                           {option.crowd_indicator}
                         </span>
                       </div>
                     </div>
                   );
-                })
-              : /* Default UI before fetch */
-                [
-                  { mode: "shared_auto", label: "Auto Rickshaw", icon: "🛺", price: "₹40", time: "5 min", crowd: "HIGH CROWD", crowdColor: "#ef4444", best: true },
-                  { mode: "bus",         label: "Metro Feeder Bus", icon: "🚌", price: "₹10", time: "15 min", crowd: "MODERATE CROWD", crowdColor: "#f97316", best: false },
-                  { mode: "walking",     label: "Walk",            icon: "🚶", price: "₹0",  time: "20 min", crowd: "LOW CROWD",      crowdColor: "#16a34a", best: false },
-                ].map((t) => (
-                  <div
-                    key={t.mode}
-                    className="rounded-2xl p-4"
-                    style={
-                      t.best
-                        ? { background: "#1a237e", color: "#fff" }
-                        : { background: "#fff", border: "1px solid #e2e8f0" }
-                    }
-                  >
-                    <div className="flex items-center gap-3">
-                      <span className="text-2xl">{t.icon}</span>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <p className={`font-bold ${t.best ? "text-white" : "text-slate-800"}`}>{t.label}</p>
-                          {t.best && (
-                            <span className="rounded-full px-2 py-0.5 text-[10px] font-bold text-white" style={{ background: "#f97316" }}>
-                              BEST CHOICE
-                            </span>
-                          )}
-                          {t.mode === "walking" && (
-                            <span className="rounded-full bg-red-100 px-2 py-0.5 text-[10px] font-bold text-red-600">
-                              AVOID
-                            </span>
-                          )}
-                        </div>
-                        <p className={`mt-0.5 text-xs ${t.best ? "text-blue-200" : "text-slate-500"}`}>
-                          {t.price} &bull; {t.time}
-                        </p>
-                      </div>
-                      <span
-                        className="rounded-full px-2 py-0.5 text-[10px] font-bold"
-                        style={{ background: t.crowdColor + "22", color: t.crowdColor }}
-                      >
-                        {t.crowd}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-          </div>
-        </section>
+                })}
+              </div>
+            </section>
 
-        {/* Sticky bottom bar */}
-        <div
-          className="sticky bottom-20 -mx-4 rounded-t-2xl px-4 py-3 text-white"
-          style={{ background: "#1e3a8a" }}
-        >
-          <p className="text-[10px] font-black uppercase tracking-widest text-blue-300">
-            NEXT AUTO ARRIVING
-          </p>
-          <div className="flex items-center justify-between">
+            {/* Refresh button */}
+            <button
+              onClick={() => generateRecommendation()}
+              className="w-full rounded-xl border border-slate-200 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50"
+            >
+              ↻ Recalculate
+            </button>
+          </>
+        )}
+
+        {/* Empty state — no result yet and not loading */}
+        {!result && !loading && !error && (
+          <div className="flex flex-col items-center gap-4 py-16 text-center">
+            <span className="text-5xl">🚇</span>
             <div>
-              <p className="font-bold text-white">Main Gate &ndash; 2 mins</p>
-              <p className="text-xs text-blue-300">₹40 estimated fare</p>
+              <p className="font-bold text-slate-800">Ready to plan your trip</p>
+              <p className="mt-1 text-sm text-slate-500">
+                Select a station and destination on the home screen
+              </p>
             </div>
-            <span className="text-2xl">🛺</span>
+            <button
+              onClick={() => router.push("/dashboard")}
+              className="rounded-xl px-6 py-3 font-bold text-white"
+              style={{ background: "#1a237e" }}
+            >
+              ← Go to Home
+            </button>
           </div>
-        </div>
+        )}
       </div>
     </AppShell>
   );

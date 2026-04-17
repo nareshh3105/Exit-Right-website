@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { AppShell } from "@/components/AppShell";
+import MapPicker from "@/components/MapPicker";
 import { getStations } from "@/lib/api";
 import { Station } from "@/lib/types";
 
@@ -12,7 +13,10 @@ export default function DashboardPage() {
   const [stations, setStations] = useState<Station[]>([]);
   const [selectedId, setSelectedId] = useState("");
   const [destination, setDestination] = useState("");
+  const [destLat, setDestLat] = useState(0);
+  const [destLng, setDestLng] = useState(0);
   const [error, setError] = useState("");
+  const [showMap, setShowMap] = useState(false);
 
   useEffect(() => {
     const savedStation = window.localStorage.getItem("exit_right_station");
@@ -21,7 +25,12 @@ export default function DashboardPage() {
     }
     const savedDest = window.localStorage.getItem("exit_right_destination");
     if (savedDest) {
-      try { setDestination(JSON.parse(savedDest).name ?? ""); } catch { /* ignore */ }
+      try {
+        const d = JSON.parse(savedDest);
+        setDestination(d.name ?? "");
+        setDestLat(d.lat ?? 0);
+        setDestLng(d.lng ?? 0);
+      } catch { /* ignore */ }
     }
     getStations().then(setStations).catch(() => {});
   }, []);
@@ -35,10 +44,17 @@ export default function DashboardPage() {
     if (destination.trim()) {
       window.localStorage.setItem(
         "exit_right_destination",
-        JSON.stringify({ name: destination.trim(), lat: 0, lng: 0 })
+        JSON.stringify({ name: destination.trim(), lat: destLat, lng: destLng })
       );
     }
     router.push("/recommendation");
+  }
+
+  function handleMapConfirm(lat: number, lng: number, name: string) {
+    setDestination(name);
+    setDestLat(lat);
+    setDestLng(lng);
+    setShowMap(false);
   }
 
   return (
@@ -48,17 +64,15 @@ export default function DashboardPage() {
         <div className="pt-2">
           <h1 className="text-3xl font-extrabold leading-tight text-slate-900">
             Where to{" "}
-            <em className="not-italic" style={{ color: "#f97316" }}>
-              next?
-            </em>
+            <em className="not-italic" style={{ color: "#f97316" }}>next?</em>
           </h1>
-          <p className="mt-1 text-sm" style={{ color: "#64748b" }}>
+          <p className="mt-1 text-sm text-slate-500">
             Chennai Metro &bull; Live commute intelligence
           </p>
         </div>
 
         {/* Trip planner card */}
-        <div className="rounded-2xl bg-white p-4 shadow-sm border border-slate-200 space-y-3">
+        <div className="space-y-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
           {/* Station dropdown */}
           <div className="space-y-1">
             <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">
@@ -70,7 +84,9 @@ export default function DashboardPage() {
                 onChange={(e) => { setSelectedId(e.target.value); setError(""); }}
                 className="w-full appearance-none rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 pr-8 text-sm font-semibold text-slate-800 outline-none focus:border-[#1a237e]"
               >
-                <option value="">Select station…</option>
+                <option value="">
+                  {stations.length === 0 ? "Loading stations…" : "Select your boarding station…"}
+                </option>
                 {stations.map((s) => (
                   <option key={s.id} value={s.id}>
                     {s.name} — {s.line_code} Line
@@ -81,26 +97,36 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* Destination input */}
+          {/* Destination input + map pin button */}
           <div className="space-y-1">
             <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">
               DESTINATION
             </p>
-            <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-base">📍</span>
-              <input
-                value={destination}
-                onChange={(e) => setDestination(e.target.value)}
-                placeholder="Enter destination…"
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 pl-9 pr-4 py-3 text-sm font-semibold text-slate-800 outline-none focus:border-[#1a237e]"
-              />
+            <div className="flex items-center gap-2">
+              <div className="relative flex-1">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-base">📍</span>
+                <input
+                  value={destination}
+                  onChange={(e) => { setDestination(e.target.value); setDestLat(0); setDestLng(0); }}
+                  placeholder="Enter destination…"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-9 pr-4 text-sm font-semibold text-slate-800 outline-none focus:border-[#1a237e]"
+                />
+              </div>
+              {/* Map pin button */}
+              <button
+                onClick={() => setShowMap(true)}
+                title="Select on map"
+                className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-xl transition hover:bg-slate-100"
+              >
+                🗺️
+              </button>
             </div>
           </div>
 
           {/* Quick destination shortcuts */}
           <div className="flex gap-2">
             <button
-              onClick={() => setDestination("Home")}
+              onClick={() => { setDestination("Home"); setDestLat(0); setDestLng(0); }}
               className="flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-semibold transition"
               style={
                 destination === "Home"
@@ -111,7 +137,7 @@ export default function DashboardPage() {
               🏠 Home
             </button>
             <button
-              onClick={() => setDestination("Office")}
+              onClick={() => { setDestination("Office"); setDestLat(0); setDestLng(0); }}
               className="flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-semibold transition"
               style={
                 destination === "Office"
@@ -128,32 +154,52 @@ export default function DashboardPage() {
           <button
             onClick={handleGo}
             disabled={!selectedId}
-            className="w-full rounded-xl py-3 font-bold text-white transition disabled:opacity-40"
+            className="w-full rounded-xl py-3 font-bold text-white transition hover:opacity-90 disabled:opacity-40"
             style={{ background: "#1a237e" }}
           >
             Get Recommendations →
           </button>
         </div>
 
-        {/* Nearby station card */}
-        <div className="ui-card overflow-hidden" style={{ borderLeft: "4px solid #1a237e" }}>
-          <div className="p-4">
-            <p
-              className="text-[10px] font-black uppercase tracking-widest"
-              style={{ color: "#1a237e" }}
+        {/* Quick access */}
+        <section>
+          <p className="mb-2 text-[10px] font-black uppercase tracking-widest text-slate-400">
+            QUICK ACCESS
+          </p>
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              onClick={() => { setDestination("Home"); setDestLat(0); setDestLng(0); }}
+              className="ui-card flex items-center justify-between p-4"
             >
-              NEARBY STATION
-            </p>
-            <p className="mt-1 text-2xl font-extrabold text-slate-900">
-              Chennai Central
-            </p>
-            <p className="mt-0.5 text-xs text-slate-500">
-              Blue Line · Interchange available
-            </p>
+              <div className="flex items-center gap-2">
+                <span className="text-xl">🏠</span>
+                <span className="font-semibold text-slate-800">Home</span>
+              </div>
+              <span className="text-slate-400">›</span>
+            </button>
+            <button
+              onClick={() => { setDestination("Office"); setDestLat(0); setDestLng(0); }}
+              className="ui-card flex items-center justify-between p-4"
+            >
+              <div className="flex items-center gap-2">
+                <span className="text-xl">💼</span>
+                <span className="font-semibold text-slate-800">Office</span>
+              </div>
+              <span className="text-slate-400">›</span>
+            </button>
           </div>
-        </div>
-
+        </section>
       </div>
+
+      {/* Full-screen map picker */}
+      {showMap && (
+        <MapPicker
+          initialLat={13.0827}
+          initialLng={80.2707}
+          onConfirm={handleMapConfirm}
+          onClose={() => setShowMap(false)}
+        />
+      )}
     </AppShell>
   );
 }
