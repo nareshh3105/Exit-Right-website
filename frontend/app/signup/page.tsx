@@ -61,7 +61,7 @@ export default function SignupPage() {
   return (
     <AppShell>
       <section className="mx-auto max-w-md rounded-3xl bg-white p-8 shadow-soft">
-        <h1 className="mb-1 text-2xl font-bold text-brand-900">Create Account</h1>
+        <h1 className="mb-1 text-2xl font-bold" style={{ color: "#1a237e" }}>Create Account</h1>
         <p className="mb-6 text-sm text-gray-500">Join EXIT RIGHT — smarter metro commuting</p>
 
         {/* Social sign-ups */}
@@ -108,7 +108,7 @@ export default function SignupPage() {
             placeholder="Full name"
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
-            className="w-full rounded-xl border border-brand-100 px-4 py-3 outline-none focus:border-brand-500"
+            className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-[#1a237e]"
           />
           <input
             type="email"
@@ -116,7 +116,7 @@ export default function SignupPage() {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded-xl border border-brand-100 px-4 py-3 outline-none focus:border-brand-500"
+            className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-[#1a237e]"
           />
           <div className="relative">
             <input
@@ -126,7 +126,7 @@ export default function SignupPage() {
               placeholder="Password (min 8 characters)"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-xl border border-brand-100 px-4 py-3 pr-11 outline-none focus:border-brand-500"
+              className="w-full rounded-xl border border-slate-200 px-4 py-3 pr-11 outline-none focus:border-[#1a237e]"
             />
             <button
               type="button"
@@ -142,7 +142,8 @@ export default function SignupPage() {
 
           <button
             disabled={loading}
-            className="w-full rounded-xl bg-brand-700 px-4 py-3 font-bold text-white transition hover:bg-brand-800 disabled:opacity-60"
+            className="w-full rounded-xl px-4 py-3 font-bold text-white transition hover:opacity-90 disabled:opacity-60"
+            style={{ background: "#1a237e" }}
           >
             {loading ? "Creating account..." : "Sign Up"}
           </button>
@@ -150,7 +151,7 @@ export default function SignupPage() {
 
         <p className="mt-5 text-center text-sm text-gray-500">
           Already have an account?{" "}
-          <Link href="/login" className="font-semibold text-brand-700 hover:underline">
+          <Link href="/login" className="font-semibold hover:underline" style={{ color: "#1a237e" }}>
             Login
           </Link>
         </p>

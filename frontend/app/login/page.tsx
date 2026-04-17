@@ -60,7 +60,7 @@ export default function LoginPage() {
   return (
     <AppShell>
       <section className="mx-auto max-w-md rounded-3xl bg-white p-8 shadow-soft">
-        <h1 className="mb-1 text-2xl font-bold text-brand-900">Welcome back</h1>
+        <h1 className="mb-1 text-2xl font-bold" style={{ color: "#1a237e" }}>Welcome back</h1>
         <p className="mb-6 text-sm text-gray-500">Sign in to your EXIT RIGHT account</p>
 
         {/* Social logins */}
@@ -108,7 +108,7 @@ export default function LoginPage() {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded-xl border border-brand-100 px-4 py-3 outline-none focus:border-brand-500"
+            className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-[#1a237e]"
           />
           <div className="relative">
             <input
@@ -117,7 +117,7 @@ export default function LoginPage() {
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-xl border border-brand-100 px-4 py-3 pr-11 outline-none focus:border-brand-500"
+              className="w-full rounded-xl border border-slate-200 px-4 py-3 pr-11 outline-none focus:border-[#1a237e]"
             />
             <button
               type="button"
@@ -133,7 +133,8 @@ export default function LoginPage() {
 
           <button
             disabled={loading}
-            className="w-full rounded-xl bg-brand-700 px-4 py-3 font-bold text-white transition hover:bg-brand-800 disabled:opacity-60"
+            className="w-full rounded-xl px-4 py-3 font-bold text-white transition hover:opacity-90 disabled:opacity-60"
+            style={{ background: "#1a237e" }}
           >
             {loading ? "Signing in..." : "Login"}
           </button>
@@ -141,7 +142,7 @@ export default function LoginPage() {
 
         <p className="mt-5 text-center text-sm text-gray-500">
           Don&apos;t have an account?{" "}
-          <Link href="/signup" className="font-semibold text-brand-700 hover:underline">
+          <Link href="/signup" className="font-semibold hover:underline" style={{ color: "#1a237e" }}>
             Sign up
           </Link>
         </p>
