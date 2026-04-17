@@ -32,7 +32,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
           {/* Brand center */}
           <Link
-            href="/dashboard"
+            href={isAuthPage ? "/" : "/dashboard"}
             className="text-lg font-extrabold tracking-tight"
             style={{ color: "#1a237e" }}
           >
