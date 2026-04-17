@@ -16,201 +16,148 @@ const LINE_COLORS: Record<string, string> = {
   Green: "#16a34a",
 };
 
-function LineBadge({ line }: { line: string }) {
-  const color = LINE_COLORS[line] ?? "#64748b";
-  return (
-    <span
-      className="rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white"
-      style={{ background: color }}
-    >
-      {line} LINE
-    </span>
-  );
-}
-
 export default function StationSelectorPage() {
   const router = useRouter();
   const [stations, setStations] = useState<Station[]>([]);
-  const [query, setQuery] = useState("");
-  const [selected, setSelected] = useState<Station | null>(null);
+  const [selectedId, setSelectedId] = useState("");
+  const [destination, setDestination] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const saved = window.localStorage.getItem("exit_right_station");
-    if (saved) {
-      try { setSelected(JSON.parse(saved)); } catch { /* ignore */ }
+    const savedStation = window.localStorage.getItem("exit_right_station");
+    if (savedStation) {
+      try { setSelectedId(JSON.parse(savedStation).id ?? ""); } catch { /* ignore */ }
+    }
+    const savedDest = window.localStorage.getItem("exit_right_destination");
+    if (savedDest) {
+      try { setDestination(JSON.parse(savedDest).name ?? ""); } catch { /* ignore */ }
     }
     getStations()
-      .then(setStations)
-      .catch(() => setError("Unable to load stations"));
+      .then((data) => { setStations(data); setLoading(false); })
+      .catch(() => { setError("Unable to load stations"); setLoading(false); });
   }, []);
 
-  function handleSelect(station: Station) {
-    setSelected(station);
-    setError("");
-    window.localStorage.setItem("exit_right_station", JSON.stringify(station));
-  }
-
   function handleNext() {
-    if (!selected) { setError("Please select a station first"); return; }
-    router.push("/destination-input");
+    if (!selectedId) { setError("Please select a boarding station"); return; }
+    const station = stations.find((s) => s.id === selectedId);
+    if (station) {
+      window.localStorage.setItem("exit_right_station", JSON.stringify(station));
+    }
+    if (destination.trim()) {
+      window.localStorage.setItem(
+        "exit_right_destination",
+        JSON.stringify({ name: destination.trim(), lat: 0, lng: 0 })
+      );
+    }
+    router.push("/recommendation");
   }
 
-  const filteredStations = stations.filter((s) =>
-    s.name.toLowerCase().includes(query.toLowerCase())
-  );
-
-  // Recent: first 2 stations from list for display
-  const recentStations = stations.slice(0, 2);
-  const favoriteStations = stations.slice(2, 4);
+  const selectedStation = stations.find((s) => s.id === selectedId);
+  const lineColor = selectedStation ? (LINE_COLORS[selectedStation.line_code] ?? "#64748b") : null;
 
   return (
     <AppShell>
-      <div className="space-y-5">
-        {/* Search bar */}
-        <div className="relative">
-          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">🔍</span>
-          <input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search metro station&hellip;"
-            className="ui-input pl-11 pr-12"
-          />
-          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400">🗺️</span>
-        </div>
-        <button className="text-xs font-bold uppercase tracking-widest" style={{ color: "#1a237e" }}>
-          OPEN NETWORK MAP
-        </button>
-
-        {/* Recent Stations */}
-        {!query && recentStations.length > 0 && (
-          <section>
-            <p className="mb-2 text-[10px] font-black uppercase tracking-widest text-slate-400">
-              RECENT STATIONS
-            </p>
-            <div className="space-y-2">
-              {recentStations.map((station) => (
-                <button
-                  key={station.id}
-                  onClick={() => handleSelect(station)}
-                  className={`ui-card flex w-full items-center justify-between p-3 text-left transition ${
-                    selected?.id === station.id ? "border-2" : ""
-                  }`}
-                  style={selected?.id === station.id ? { borderColor: "#1a237e" } : {}}
-                >
-                  <div>
-                    <p className="font-semibold text-slate-800">{station.name}</p>
-                    <div className="mt-1 flex gap-1.5">
-                      <LineBadge line={station.line_code} />
-                    </div>
-                  </div>
-                  <span className="text-slate-300">›</span>
-                </button>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Favorites */}
-        {!query && favoriteStations.length > 0 && (
-          <section>
-            <p className="mb-2 text-[10px] font-black uppercase tracking-widest text-slate-400">
-              FAVOURITES
-            </p>
-            <div className="space-y-2">
-              {favoriteStations.map((station) => (
-                <button
-                  key={station.id}
-                  onClick={() => handleSelect(station)}
-                  className={`ui-card flex w-full items-center justify-between p-3 text-left transition ${
-                    selected?.id === station.id ? "border-2" : ""
-                  }`}
-                  style={selected?.id === station.id ? { borderColor: "#1a237e" } : {}}
-                >
-                  <div>
-                    <p className="font-semibold text-slate-800">{station.name}</p>
-                    <div className="mt-1 flex gap-1.5">
-                      <LineBadge line={station.line_code} />
-                    </div>
-                  </div>
-                  <span className="text-slate-300">›</span>
-                </button>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* All Stations */}
-        <section>
-          <p className="mb-2 text-[10px] font-black uppercase tracking-widest text-slate-400">
-            {query ? `RESULTS FOR "${query.toUpperCase()}"` : "ALL STATIONS"}
+      <div className="space-y-6">
+        {/* Heading */}
+        <div className="pt-1">
+          <h1 className="text-3xl font-extrabold text-slate-900">Plan Your Trip</h1>
+          <p className="mt-1 text-sm text-slate-500">
+            Select your station and destination
           </p>
-          {filteredStations.length === 0 && (
-            <p className="text-sm text-slate-400">
-              {error || (query ? "No stations match your search" : "Loading stations\u2026")}
-            </p>
-          )}
-          <div className="space-y-2">
-            {filteredStations.map((station) => {
-              const isSelected = selected?.id === station.id;
-              return (
-                <button
-                  key={station.id}
-                  onClick={() => handleSelect(station)}
-                  className="ui-card flex w-full items-center gap-3 p-3 text-left transition hover:border-slate-300"
-                  style={isSelected ? { border: "2px solid #1a237e", background: "#eef2ff" } : {}}
-                >
-                  <span className="h-2.5 w-2.5 flex-shrink-0 rounded-full bg-slate-300" />
-                  <p className="flex-1 font-semibold text-slate-800">{station.name}</p>
-                  <span className="text-[10px] text-slate-400 uppercase font-bold">
-                    {station.line_code}
-                  </span>
-                  {isSelected ? (
-                    <span className="font-bold text-blue-900">✓</span>
-                  ) : (
-                    <span className="text-slate-300">›</span>
-                  )}
-                </button>
-              );
-            })}
-          </div>
-        </section>
+        </div>
 
-        {/* Network explorer card */}
-        <div
-          className="flex items-center justify-between rounded-2xl p-4 text-white"
-          style={{ background: "#1e3a8a" }}
-        >
-          <div>
-            <p className="text-[10px] font-black uppercase tracking-widest text-blue-300">
-              EXPLORE THE ENTIRE NETWORK
-            </p>
-            <p className="mt-0.5 text-sm font-bold">LAUNCH VIEWER</p>
+        {/* Boarding Station Dropdown */}
+        <div className="space-y-2">
+          <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">
+            BOARDING STATION
+          </p>
+          <div className="relative">
+            <select
+              value={selectedId}
+              onChange={(e) => { setSelectedId(e.target.value); setError(""); }}
+              className="w-full appearance-none rounded-xl border border-slate-200 bg-white px-4 py-3.5 pr-10 text-sm font-semibold text-slate-800 shadow-sm outline-none focus:border-[#1a237e]"
+            >
+              <option value="">
+                {loading ? "Loading stations…" : "Select your boarding station…"}
+              </option>
+              {stations.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.name} — {s.line_code} Line
+                </option>
+              ))}
+            </select>
+            <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs">
+              ▼
+            </span>
           </div>
-          <span className="text-2xl">🗺️</span>
+
+          {/* Selected station badge */}
+          {selectedStation && lineColor && (
+            <div
+              className="flex items-center gap-2 rounded-xl px-3 py-2"
+              style={{ background: lineColor + "18", border: `1.5px solid ${lineColor}` }}
+            >
+              <span
+                className="h-2.5 w-2.5 flex-shrink-0 rounded-full"
+                style={{ background: lineColor }}
+              />
+              <span className="text-xs font-bold" style={{ color: lineColor }}>
+                {selectedStation.line_code} LINE
+              </span>
+              <span className="ml-1 text-xs font-semibold text-slate-700">
+                {selectedStation.name}
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* Destination */}
+        <div className="space-y-2">
+          <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">
+            WHERE TO?
+          </p>
+          <div className="relative">
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">📍</span>
+            <input
+              value={destination}
+              onChange={(e) => setDestination(e.target.value)}
+              placeholder="Enter destination…"
+              className="w-full rounded-xl border border-slate-200 bg-white pl-11 pr-4 py-3.5 text-sm font-semibold text-slate-800 shadow-sm outline-none focus:border-[#1a237e]"
+            />
+          </div>
+        </div>
+
+        {/* Quick destination shortcuts */}
+        <div className="grid grid-cols-2 gap-3">
+          <button
+            onClick={() => setDestination("Home")}
+            className="ui-card flex items-center gap-2 p-3 text-left transition"
+            style={destination === "Home" ? { border: "2px solid #1a237e" } : {}}
+          >
+            <span className="text-lg">🏠</span>
+            <span className="text-sm font-semibold text-slate-800">Home</span>
+          </button>
+          <button
+            onClick={() => setDestination("Office")}
+            className="ui-card flex items-center gap-2 p-3 text-left transition"
+            style={destination === "Office" ? { border: "2px solid #1a237e" } : {}}
+          >
+            <span className="text-lg">💼</span>
+            <span className="text-sm font-semibold text-slate-800">Office</span>
+          </button>
         </div>
 
         {error && <p className="text-sm text-red-500">{error}</p>}
 
-        {/* Next button */}
-        <div className="flex items-center justify-between">
-          <div />
-          <button
-            onClick={handleNext}
-            disabled={!selected}
-            className="flex items-center gap-2 rounded-xl px-8 py-3 font-bold text-white transition disabled:opacity-40"
-            style={{ background: "#1a237e" }}
-          >
-            Next &rarr;
-          </button>
-        </div>
-
-        {/* Orange FAB */}
+        {/* CTA */}
         <button
-          className="fixed bottom-20 right-5 flex h-14 w-14 items-center justify-center rounded-full text-2xl text-white shadow-lg"
-          style={{ background: "#f97316" }}
+          onClick={handleNext}
+          disabled={!selectedId}
+          className="w-full rounded-xl py-4 font-bold text-white transition disabled:opacity-40"
+          style={{ background: "#1a237e" }}
         >
-          📍
+          Get Recommendations →
         </button>
       </div>
     </AppShell>

@@ -25,36 +25,8 @@ export default function DashboardPage() {
           className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm"
         >
           <span className="text-slate-400">🔍</span>
-          <span className="text-sm text-slate-400">Search Hauz Khas or Rajiv Chowk&hellip;</span>
+          <span className="text-sm text-slate-400">Tap to select station &amp; destination&hellip;</span>
         </Link>
-
-        {/* Metro line status row */}
-        <div className="grid grid-cols-2 gap-3">
-          <div className="ui-card flex items-center gap-3 p-3">
-            <span
-              className="h-3 w-3 flex-shrink-0 rounded-full"
-              style={{ background: "#eab308" }}
-            />
-            <div>
-              <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                YELLOW LINE
-              </p>
-              <p className="text-xs font-semibold text-green-600">Normal Service</p>
-            </div>
-          </div>
-          <div className="ui-card flex items-center gap-3 p-3">
-            <span
-              className="h-3 w-3 flex-shrink-0 rounded-full"
-              style={{ background: "#3b82f6" }}
-            />
-            <div>
-              <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                BLUE LINE
-              </p>
-              <p className="text-xs font-semibold text-orange-500">Minor Delays</p>
-            </div>
-          </div>
-        </div>
 
         {/* Nearby station card */}
         <div
@@ -78,14 +50,14 @@ export default function DashboardPage() {
             QUICK ACCESS
           </p>
           <div className="grid grid-cols-2 gap-3">
-            <Link href="/destination-input" className="ui-card flex items-center justify-between p-4">
+            <Link href="/station-selector" className="ui-card flex items-center justify-between p-4">
               <div className="flex items-center gap-2">
                 <span className="text-xl">🏠</span>
                 <span className="font-semibold text-slate-800">Home</span>
               </div>
               <span className="text-slate-400">›</span>
             </Link>
-            <Link href="/destination-input" className="ui-card flex items-center justify-between p-4">
+            <Link href="/station-selector" className="ui-card flex items-center justify-between p-4">
               <div className="flex items-center gap-2">
                 <span className="text-xl">💼</span>
                 <span className="font-semibold text-slate-800">Office</span>

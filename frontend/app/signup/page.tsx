@@ -50,7 +50,7 @@ export default function SignupPage() {
       const data = await signup({ full_name: fullName, email, password });
       window.localStorage.setItem("exit_right_token", data.access_token);
       window.localStorage.setItem("exit_right_user", JSON.stringify(data));
-      router.push("/dashboard");
+      router.push("/setup-location");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Signup failed");
     } finally {
@@ -108,6 +108,7 @@ export default function SignupPage() {
             placeholder="Full name"
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
+            autoComplete="name"
             className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-[#1a237e]"
           />
           <input
@@ -116,6 +117,7 @@ export default function SignupPage() {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            autoComplete="email"
             className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-[#1a237e]"
           />
           <div className="relative">
@@ -126,6 +128,7 @@ export default function SignupPage() {
               placeholder="Password (min 8 characters)"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              autoComplete="new-password"
               className="w-full rounded-xl border border-slate-200 px-4 py-3 pr-11 outline-none focus:border-[#1a237e]"
             />
             <button

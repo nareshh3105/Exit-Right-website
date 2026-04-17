@@ -108,6 +108,7 @@ export default function LoginPage() {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            autoComplete="email"
             className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-[#1a237e]"
           />
           <div className="relative">
@@ -117,6 +118,7 @@ export default function LoginPage() {
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
               className="w-full rounded-xl border border-slate-200 px-4 py-3 pr-11 outline-none focus:border-[#1a237e]"
             />
             <button
