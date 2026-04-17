@@ -1,6 +1,20 @@
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function LandingPage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    // If already logged in, skip the splash and go straight to dashboard
+    const token = window.localStorage.getItem("exit_right_token");
+    if (token) {
+      router.replace("/dashboard");
+    }
+  }, [router]);
+
   return (
     <div
       className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden"
@@ -8,7 +22,7 @@ export default function LandingPage() {
     >
       {/* Cities breadcrumb at top */}
       <p className="absolute top-10 text-[11px] font-bold uppercase tracking-[0.25em] text-slate-400">
-        DELHI &bull; MUMBAI &bull; BENGALURU
+        CHENNAI &bull; MUMBAI &bull; BENGALURU
       </p>
 
       {/* Center content */}
@@ -30,7 +44,7 @@ export default function LandingPage() {
         <div className="mt-4 flex gap-3">
           <Link
             href="/signup"
-            className="rounded-xl px-6 py-3 text-sm font-bold text-white transition"
+            className="rounded-xl px-6 py-3 text-sm font-bold text-white transition hover:opacity-90"
             style={{ background: "#f97316" }}
           >
             Get Started
@@ -42,17 +56,6 @@ export default function LandingPage() {
             Login
           </Link>
         </div>
-      </div>
-
-      {/* Progress bar at bottom */}
-      <div className="absolute bottom-12 left-0 right-0 flex flex-col items-center gap-2 px-10">
-        <div className="h-1 w-full max-w-xs overflow-hidden rounded-full bg-white/10">
-          <div
-            className="h-full rounded-full"
-            style={{ width: "65%", background: "#f97316" }}
-          />
-        </div>
-        <p className="text-[10px] text-slate-500">Loading city data&hellip;</p>
       </div>
     </div>
   );
