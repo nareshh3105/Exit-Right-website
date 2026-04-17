@@ -3,50 +3,71 @@
 @tailwind utilities;
 
 :root {
+  --navy: #1a237e;
+  --orange: #f97316;
+  --green-eco: #16a34a;
+  --bg: #f5f7fa;
   --surface: #fcf9f8;
   --surface-soft: #f6f3f2;
   --surface-card: #ffffff;
-  --text-main: #1b1c1c;
-  --text-muted: #5c606b;
-  --primary: #0d5c43;
-  --primary-strong: #000666;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
   --outline-soft: #e6e3e2;
 }
 
 body {
-  background: linear-gradient(180deg, #f4faf7 0%, var(--surface) 24%, #f9fbfa 100%);
+  background: var(--bg);
   color: var(--text-main);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.bottom-nav-height {
+  height: 64px;
 }
 
 @layer components {
   .ui-card {
-    @apply rounded-3xl bg-white shadow-soft;
-    border: 1px solid var(--outline-soft);
+    @apply rounded-2xl bg-white shadow-sm;
+    border: 1px solid #e2e8f0;
   }
 
   .ui-input {
-    @apply w-full rounded-2xl px-4 py-3 outline-none transition;
-    background: var(--surface-soft);
-    border: 1px solid #ece8e7;
+    @apply w-full rounded-xl px-4 py-3 outline-none transition text-sm;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
   }
 
   .ui-input:focus {
-    border-color: #8fb7ff;
-    box-shadow: 0 0 0 3px rgba(76, 86, 175, 0.14);
+    border-color: #1a237e;
+    box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.12);
   }
 
   .ui-button-primary {
-    @apply inline-flex items-center justify-center rounded-2xl px-5 py-2.5 text-sm font-semibold text-white transition;
-    background: var(--primary);
+    @apply inline-flex items-center justify-center rounded-xl px-5 py-2.5 text-sm font-semibold text-white transition;
+    background: var(--navy);
   }
 
   .ui-button-primary:hover {
-    background: #0b4f3a;
+    background: #283593;
   }
 
-  .ui-button-secondary {
-    @apply inline-flex items-center justify-center rounded-2xl px-5 py-2.5 text-sm font-semibold transition;
-    background: #e6f5ee;
-    color: #0d5c43;
+  .line-badge-yellow {
+    @apply rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white;
+    background: #eab308;
+  }
+
+  .line-badge-blue {
+    @apply rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white;
+    background: #3b82f6;
+  }
+
+  .line-badge-magenta {
+    @apply rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white;
+    background: #ec4899;
+  }
+
+  .line-badge-rapid {
+    @apply rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white;
+    background: #7c3aed;
   }
 }

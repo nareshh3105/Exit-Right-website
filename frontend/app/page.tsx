@@ -1,41 +1,59 @@
 import Link from "next/link";
 
-import { AppShell } from "@/components/AppShell";
-
 export default function LandingPage() {
   return (
-    <AppShell>
-      <section className="grid gap-8 md:grid-cols-2 md:items-center">
-        <div>
-          <p className="mb-3 inline-flex rounded-full bg-brand-100 px-3 py-1 text-xs font-bold text-brand-900">
-            Chennai Metro Intelligence Platform
-          </p>
-          <h1 className="mb-4 text-4xl font-extrabold leading-tight text-brand-900 md:text-5xl">
-            EXIT RIGHT
-          </h1>
-          <p className="mb-6 text-base text-slate-700 md:text-lg">
-            Choose the best metro exit gate and last-mile travel mode using adaptive time, cost, crowd, weather, and safety scoring.
-          </p>
-          <div className="flex flex-wrap gap-3">
-            <Link href="/signup" className="rounded-xl bg-brand-700 px-5 py-3 text-sm font-bold text-white hover:bg-brand-900">
-              Get Started
-            </Link>
-            <Link href="/login" className="rounded-xl border border-brand-700 px-5 py-3 text-sm font-bold text-brand-700 hover:bg-brand-50">
-              Login
-            </Link>
-          </div>
+    <div
+      className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden"
+      style={{ background: "#0d1562" }}
+    >
+      {/* Cities breadcrumb at top */}
+      <p className="absolute top-10 text-[11px] font-bold uppercase tracking-[0.25em] text-slate-400">
+        DELHI &bull; MUMBAI &bull; BENGALURU
+      </p>
+
+      {/* Center content */}
+      <div className="flex flex-col items-center gap-5 px-8 text-center">
+        {/* Rupee icon in orange square */}
+        <div
+          className="flex h-20 w-20 items-center justify-center rounded-2xl text-4xl font-extrabold text-white shadow-lg"
+          style={{ background: "#f97316" }}
+        >
+          ₹
         </div>
-        <div className="rounded-3xl bg-white p-6 shadow-soft">
-          <h2 className="mb-4 text-xl font-bold text-brand-900">What EXIT RIGHT Optimizes</h2>
-          <ul className="space-y-2 text-sm text-slate-700">
-            <li>Best exit gate by destination direction and distance</li>
-            <li>Transport ranking: Walking, Shared Auto, Bus, Cab</li>
-            <li>Live weather penalty adaptation for rain conditions</li>
-            <li>Crowd level and time-of-day safety weighting</li>
-            <li>Cab comparison for Uber, Ola, Rapido, Namma Yatri</li>
-          </ul>
+
+        <h1 className="text-5xl font-extrabold tracking-tight text-white">EXIT RIGHT</h1>
+
+        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">
+          THE SMARTER WAY OUT
+        </p>
+
+        <div className="mt-4 flex gap-3">
+          <Link
+            href="/signup"
+            className="rounded-xl px-6 py-3 text-sm font-bold text-white transition"
+            style={{ background: "#f97316" }}
+          >
+            Get Started
+          </Link>
+          <Link
+            href="/login"
+            className="rounded-xl border border-slate-500 px-6 py-3 text-sm font-bold text-slate-300 transition hover:bg-white/10"
+          >
+            Login
+          </Link>
         </div>
-      </section>
-    </AppShell>
+      </div>
+
+      {/* Progress bar at bottom */}
+      <div className="absolute bottom-12 left-0 right-0 flex flex-col items-center gap-2 px-10">
+        <div className="h-1 w-full max-w-xs overflow-hidden rounded-full bg-white/10">
+          <div
+            className="h-full rounded-full"
+            style={{ width: "65%", background: "#f97316" }}
+          />
+        </div>
+        <p className="text-[10px] text-slate-500">Loading city data&hellip;</p>
+      </div>
+    </div>
   );
 }

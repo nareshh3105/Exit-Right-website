@@ -2,26 +2,126 @@ import Link from "next/link";
 
 import { AppShell } from "@/components/AppShell";
 
-const cards = [
-  { href: "/station-selector", title: "1. Select Station", text: "Choose Guindy, Alandur, Vadapalani, Egmore, or CMBT." },
-  { href: "/destination-input", title: "2. Enter Destination", text: "Use Google Places autocomplete or manual coordinates." },
-  { href: "/recommendation", title: "3. View Recommendation", text: "Get best exit gate + ranked transport modes." },
-  { href: "/cab-comparison", title: "4. Compare Cabs", text: "See Uber, Ola, Rapido, and Namma Yatri prices." },
-];
-
 export default function DashboardPage() {
   return (
     <AppShell>
-      <h1 className="mb-2 text-4xl font-extrabold tracking-tight text-[#000666]">Where to?</h1>
-      <p className="mb-6 text-sm text-slate-600">Pick a step to continue your trip flow.</p>
-      <section className="grid gap-4 md:grid-cols-2">
-        {cards.map((card) => (
-          <Link key={card.href} href={card.href} className="ui-card p-5 transition hover:-translate-y-0.5">
-            <h2 className="mb-2 text-lg font-bold text-[#1b1c1c]">{card.title}</h2>
-            <p className="text-sm text-slate-600">{card.text}</p>
+      <div className="space-y-5">
+        {/* Heading */}
+        <div className="pt-2">
+          <h1 className="text-3xl font-extrabold leading-tight text-slate-900">
+            Where to{" "}
+            <em className="not-italic" style={{ color: "#f97316" }}>
+              next?
+            </em>
+          </h1>
+          <p className="mt-1 text-sm" style={{ color: "#64748b" }}>
+            Chennai Metro &bull; Live commute intelligence
+          </p>
+        </div>
+
+        {/* Search bar */}
+        <Link
+          href="/station-selector"
+          className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm"
+        >
+          <span className="text-slate-400">🔍</span>
+          <span className="text-sm text-slate-400">Search Hauz Khas or Rajiv Chowk&hellip;</span>
+        </Link>
+
+        {/* Metro line status row */}
+        <div className="grid grid-cols-2 gap-3">
+          <div className="ui-card flex items-center gap-3 p-3">
+            <span
+              className="h-3 w-3 flex-shrink-0 rounded-full"
+              style={{ background: "#eab308" }}
+            />
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                YELLOW LINE
+              </p>
+              <p className="text-xs font-semibold text-green-600">Normal Service</p>
+            </div>
+          </div>
+          <div className="ui-card flex items-center gap-3 p-3">
+            <span
+              className="h-3 w-3 flex-shrink-0 rounded-full"
+              style={{ background: "#3b82f6" }}
+            />
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                BLUE LINE
+              </p>
+              <p className="text-xs font-semibold text-orange-500">Minor Delays</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Nearby station card */}
+        <div
+          className="ui-card overflow-hidden"
+          style={{ borderLeft: "4px solid #16a34a" }}
+        >
+          <div className="p-4">
+            <p className="text-[10px] font-black uppercase tracking-widest text-green-600">
+              NEARBY STATION
+            </p>
+            <p className="mt-1 text-2xl font-extrabold text-slate-900">Kashmere Gate</p>
+            <p className="mt-0.5 text-xs text-slate-500">
+              Interchange for Red, Yellow &amp; Violet Lines
+            </p>
+          </div>
+        </div>
+
+        {/* Quick access 2-col grid */}
+        <section>
+          <p className="mb-2 text-[10px] font-black uppercase tracking-widest text-slate-400">
+            QUICK ACCESS
+          </p>
+          <div className="grid grid-cols-2 gap-3">
+            <Link href="/destination-input" className="ui-card flex items-center justify-between p-4">
+              <div className="flex items-center gap-2">
+                <span className="text-xl">🏠</span>
+                <span className="font-semibold text-slate-800">Home</span>
+              </div>
+              <span className="text-slate-400">›</span>
+            </Link>
+            <Link href="/destination-input" className="ui-card flex items-center justify-between p-4">
+              <div className="flex items-center gap-2">
+                <span className="text-xl">💼</span>
+                <span className="font-semibold text-slate-800">Office</span>
+              </div>
+              <span className="text-slate-400">›</span>
+            </Link>
+          </div>
+        </section>
+
+        {/* Recommendation CTA card */}
+        <div className="rounded-2xl p-5 text-white" style={{ background: "#1a237e" }}>
+          <p className="text-sm font-medium text-blue-200">Not sure where to head next?</p>
+          <p className="mt-1 text-xs text-blue-300">
+            Get a smart suggestion based on your commute patterns
+          </p>
+          <Link
+            href="/recommendation"
+            className="mt-4 inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold text-white"
+            style={{ background: "#f97316" }}
+          >
+            Quick Recommendation (₹) ⚡
           </Link>
-        ))}
-      </section>
+        </div>
+
+        {/* Green route banner */}
+        <div
+          className="flex items-center gap-3 rounded-2xl px-4 py-3 text-white"
+          style={{ background: "#16a34a" }}
+        >
+          <span className="text-xl">🌿</span>
+          <div>
+            <p className="text-sm font-semibold">Greenest route via E-Rickshaw</p>
+            <p className="text-xs text-green-200">Save 2kg CO₂ on this trip</p>
+          </div>
+        </div>
+      </div>
     </AppShell>
   );
 }
