@@ -48,32 +48,41 @@ async def seed_initial_data() -> None:
     providers_data = payload.get("cab_providers", [])
 
     async with SessionLocal() as session:
-        existing_stations = await session.execute(select(Station.id))
-        if not existing_stations.scalars().first():
-            logger.info("[Seed] Inserting %d stations …", len(stations_data))
-            for station_item in stations_data:
-                station = Station(
-                    city=payload.get("city", "Chennai"),
-                    name=station_item["name"],
-                    line_code=station_item["line_code"],
-                    latitude=station_item["latitude"],
-                    longitude=station_item["longitude"],
-                    popularity_index=station_item["popularity_index"],
-                )
-                session.add(station)
-                await session.flush()
-                for exit_item in station_item.get("exits", []):
-                    session.add(
-                        ExitGate(
-                            station_id=station.id,
-                            gate_code=exit_item["gate_code"],
-                            gate_name=exit_item["gate_name"],
-                            latitude=exit_item["latitude"],
-                            longitude=exit_item["longitude"],
-                            road_type=exit_item.get("road_type", "main_road"),
-                            lighting_score=exit_item.get("lighting_score", 0.7),
-                        )
+        # Fetch all existing station names to avoid duplicates
+        existing_result = await session.execute(select(Station.name))
+        existing_names = {row for row in existing_result.scalars().all()}
+        new_count = 0
+        city = payload.get("city", "Chennai")
+        for station_item in stations_data:
+            if station_item["name"] in existing_names:
+                continue  # already seeded
+            station = Station(
+                city=city,
+                name=station_item["name"],
+                line_code=station_item["line_code"],
+                latitude=station_item["latitude"],
+                longitude=station_item["longitude"],
+                popularity_index=station_item["popularity_index"],
+            )
+            session.add(station)
+            await session.flush()
+            for exit_item in station_item.get("exits", []):
+                session.add(
+                    ExitGate(
+                        station_id=station.id,
+                        gate_code=exit_item["gate_code"],
+                        gate_name=exit_item["gate_name"],
+                        latitude=exit_item["latitude"],
+                        longitude=exit_item["longitude"],
+                        road_type=exit_item.get("road_type", "main_road"),
+                        lighting_score=exit_item.get("lighting_score", 0.7),
                     )
+                )
+            new_count += 1
+        if new_count:
+            logger.info("[Seed] Inserted %d new stations …", new_count)
+        else:
+            logger.info("[Seed] All stations already present — skipped.")
 
         existing_providers = await session.execute(select(CabProvider.id))
         if not existing_providers.scalars().first():

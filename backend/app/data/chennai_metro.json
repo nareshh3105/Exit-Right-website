@@ -2,28 +2,245 @@
   "city": "Chennai",
   "stations": [
     {
+      "name": "Wimco Nagar Depot",
+      "line_code": "Blue",
+      "latitude": 13.1490,
+      "longitude": 80.3012,
+      "popularity_index": 0.55,
+      "exits": [
+        { "gate_code": "W1", "gate_name": "Depot Main Gate", "latitude": 13.1492, "longitude": 80.3008, "road_type": "main_road", "lighting_score": 0.75 }
+      ]
+    },
+    {
+      "name": "Wimco Nagar",
+      "line_code": "Blue",
+      "latitude": 13.1467,
+      "longitude": 80.2989,
+      "popularity_index": 0.60,
+      "exits": [
+        { "gate_code": "WN1", "gate_name": "North Exit", "latitude": 13.1470, "longitude": 80.2985, "road_type": "main_road", "lighting_score": 0.74 },
+        { "gate_code": "WN2", "gate_name": "South Exit", "latitude": 13.1464, "longitude": 80.2993, "road_type": "inner_road", "lighting_score": 0.65 }
+      ]
+    },
+    {
+      "name": "Thiruvotriyur",
+      "line_code": "Blue",
+      "latitude": 13.1444,
+      "longitude": 80.2953,
+      "popularity_index": 0.65,
+      "exits": [
+        { "gate_code": "T1", "gate_name": "Bus Stand Exit", "latitude": 13.1447, "longitude": 80.2949, "road_type": "main_road", "lighting_score": 0.78 },
+        { "gate_code": "T2", "gate_name": "Market Exit", "latitude": 13.1441, "longitude": 80.2957, "road_type": "inner_road", "lighting_score": 0.66 }
+      ]
+    },
+    {
+      "name": "Thiruvotriyur Theradi",
+      "line_code": "Blue",
+      "latitude": 13.1371,
+      "longitude": 80.2900,
+      "popularity_index": 0.58,
+      "exits": [
+        { "gate_code": "TT1", "gate_name": "Theradi Main Exit", "latitude": 13.1374, "longitude": 80.2896, "road_type": "main_road", "lighting_score": 0.72 },
+        { "gate_code": "TT2", "gate_name": "East Exit", "latitude": 13.1368, "longitude": 80.2904, "road_type": "inner_road", "lighting_score": 0.63 }
+      ]
+    },
+    {
+      "name": "Kaladipet",
+      "line_code": "Blue",
+      "latitude": 13.1292,
+      "longitude": 80.2853,
+      "popularity_index": 0.60,
+      "exits": [
+        { "gate_code": "K1", "gate_name": "North Exit", "latitude": 13.1295, "longitude": 80.2849, "road_type": "main_road", "lighting_score": 0.73 },
+        { "gate_code": "K2", "gate_name": "South Exit", "latitude": 13.1289, "longitude": 80.2857, "road_type": "inner_road", "lighting_score": 0.64 }
+      ]
+    },
+    {
+      "name": "Tollgate",
+      "line_code": "Blue",
+      "latitude": 13.1211,
+      "longitude": 80.2823,
+      "popularity_index": 0.62,
+      "exits": [
+        { "gate_code": "TG1", "gate_name": "Tollgate Main Exit", "latitude": 13.1214, "longitude": 80.2819, "road_type": "main_road", "lighting_score": 0.76 },
+        { "gate_code": "TG2", "gate_name": "West Exit", "latitude": 13.1208, "longitude": 80.2827, "road_type": "inner_road", "lighting_score": 0.65 }
+      ]
+    },
+    {
+      "name": "New Washermenpet",
+      "line_code": "Blue",
+      "latitude": 13.1137,
+      "longitude": 80.2803,
+      "popularity_index": 0.66,
+      "exits": [
+        { "gate_code": "NW1", "gate_name": "Main Road Exit", "latitude": 13.1140, "longitude": 80.2799, "road_type": "main_road", "lighting_score": 0.77 },
+        { "gate_code": "NW2", "gate_name": "Market Exit", "latitude": 13.1134, "longitude": 80.2807, "road_type": "inner_road", "lighting_score": 0.67 }
+      ]
+    },
+    {
+      "name": "Tondiarpet",
+      "line_code": "Blue",
+      "latitude": 13.1066,
+      "longitude": 80.2781,
+      "popularity_index": 0.68,
+      "exits": [
+        { "gate_code": "TP1", "gate_name": "North Exit", "latitude": 13.1069, "longitude": 80.2777, "road_type": "main_road", "lighting_score": 0.78 },
+        { "gate_code": "TP2", "gate_name": "South Exit", "latitude": 13.1063, "longitude": 80.2785, "road_type": "inner_road", "lighting_score": 0.68 }
+      ]
+    },
+    {
+      "name": "Sir Theagaraya College",
+      "line_code": "Blue",
+      "latitude": 13.1006,
+      "longitude": 80.2748,
+      "popularity_index": 0.70,
+      "exits": [
+        { "gate_code": "ST1", "gate_name": "College Gate Exit", "latitude": 13.1009, "longitude": 80.2744, "road_type": "main_road", "lighting_score": 0.80 },
+        { "gate_code": "ST2", "gate_name": "Residential Exit", "latitude": 13.1003, "longitude": 80.2752, "road_type": "inner_road", "lighting_score": 0.69 }
+      ]
+    },
+    {
+      "name": "Washermenpet",
+      "line_code": "Blue",
+      "latitude": 13.0951,
+      "longitude": 80.2723,
+      "popularity_index": 0.72,
+      "exits": [
+        { "gate_code": "WP1", "gate_name": "Market Exit", "latitude": 13.0954, "longitude": 80.2719, "road_type": "main_road", "lighting_score": 0.79 },
+        { "gate_code": "WP2", "gate_name": "East Exit", "latitude": 13.0948, "longitude": 80.2727, "road_type": "inner_road", "lighting_score": 0.68 }
+      ]
+    },
+    {
+      "name": "Mannadi",
+      "line_code": "Blue",
+      "latitude": 13.0893,
+      "longitude": 80.2700,
+      "popularity_index": 0.74,
+      "exits": [
+        { "gate_code": "M1", "gate_name": "Beach Exit", "latitude": 13.0896, "longitude": 80.2696, "road_type": "main_road", "lighting_score": 0.82 },
+        { "gate_code": "M2", "gate_name": "Market Exit", "latitude": 13.0890, "longitude": 80.2704, "road_type": "main_road", "lighting_score": 0.72 }
+      ]
+    },
+    {
+      "name": "High Court",
+      "line_code": "Blue",
+      "latitude": 13.0842,
+      "longitude": 80.2682,
+      "popularity_index": 0.78,
+      "exits": [
+        { "gate_code": "HC1", "gate_name": "High Court Main Exit", "latitude": 13.0845, "longitude": 80.2678, "road_type": "main_road", "lighting_score": 0.85 },
+        { "gate_code": "HC2", "gate_name": "Beach Road Exit", "latitude": 13.0839, "longitude": 80.2686, "road_type": "main_road", "lighting_score": 0.75 }
+      ]
+    },
+    {
+      "name": "Puratchi Thalaivar Dr. M.G. Ramachandran Central",
+      "line_code": "Blue",
+      "latitude": 13.0827,
+      "longitude": 80.2752,
+      "popularity_index": 0.95,
+      "exits": [
+        { "gate_code": "CM1", "gate_name": "Central Railway Station Exit", "latitude": 13.0830, "longitude": 80.2748, "road_type": "main_road", "lighting_score": 0.95 },
+        { "gate_code": "CM2", "gate_name": "Park Town Exit", "latitude": 13.0824, "longitude": 80.2756, "road_type": "main_road", "lighting_score": 0.88 },
+        { "gate_code": "CM3", "gate_name": "Broadway Exit", "latitude": 13.0833, "longitude": 80.2760, "road_type": "main_road", "lighting_score": 0.85 }
+      ]
+    },
+    {
+      "name": "Government Estate",
+      "line_code": "Blue",
+      "latitude": 13.0778,
+      "longitude": 80.2723,
+      "popularity_index": 0.70,
+      "exits": [
+        { "gate_code": "GE1", "gate_name": "Secretariat Exit", "latitude": 13.0781, "longitude": 80.2719, "road_type": "main_road", "lighting_score": 0.88 },
+        { "gate_code": "GE2", "gate_name": "Anna Salai Exit", "latitude": 13.0775, "longitude": 80.2727, "road_type": "main_road", "lighting_score": 0.80 }
+      ]
+    },
+    {
+      "name": "LIC",
+      "line_code": "Blue",
+      "latitude": 13.0717,
+      "longitude": 80.2692,
+      "popularity_index": 0.72,
+      "exits": [
+        { "gate_code": "L1", "gate_name": "Anna Salai North Exit", "latitude": 13.0720, "longitude": 80.2688, "road_type": "main_road", "lighting_score": 0.84 },
+        { "gate_code": "L2", "gate_name": "Anna Salai South Exit", "latitude": 13.0714, "longitude": 80.2696, "road_type": "main_road", "lighting_score": 0.78 }
+      ]
+    },
+    {
+      "name": "Thousand Lights",
+      "line_code": "Blue",
+      "latitude": 13.0655,
+      "longitude": 80.2666,
+      "popularity_index": 0.75,
+      "exits": [
+        { "gate_code": "TL1", "gate_name": "Anna Salai Exit", "latitude": 13.0658, "longitude": 80.2662, "road_type": "main_road", "lighting_score": 0.85 },
+        { "gate_code": "TL2", "gate_name": "Khader Nawaz Khan Road Exit", "latitude": 13.0652, "longitude": 80.2670, "road_type": "main_road", "lighting_score": 0.80 }
+      ]
+    },
+    {
+      "name": "AG-DMS",
+      "line_code": "Blue",
+      "latitude": 13.0597,
+      "longitude": 80.2583,
+      "popularity_index": 0.73,
+      "exits": [
+        { "gate_code": "AG1", "gate_name": "DMS Main Exit", "latitude": 13.0600, "longitude": 80.2579, "road_type": "main_road", "lighting_score": 0.82 },
+        { "gate_code": "AG2", "gate_name": "Gemini Exit", "latitude": 13.0594, "longitude": 80.2587, "road_type": "main_road", "lighting_score": 0.76 }
+      ]
+    },
+    {
+      "name": "Teynampet",
+      "line_code": "Blue",
+      "latitude": 13.0523,
+      "longitude": 80.2531,
+      "popularity_index": 0.74,
+      "exits": [
+        { "gate_code": "TN1", "gate_name": "Khader Nawaz Khan Exit", "latitude": 13.0526, "longitude": 80.2527, "road_type": "main_road", "lighting_score": 0.83 },
+        { "gate_code": "TN2", "gate_name": "Venkatnarayana Road Exit", "latitude": 13.0520, "longitude": 80.2535, "road_type": "inner_road", "lighting_score": 0.73 }
+      ]
+    },
+    {
+      "name": "Nandanam",
+      "line_code": "Blue",
+      "latitude": 13.0450,
+      "longitude": 80.2474,
+      "popularity_index": 0.72,
+      "exits": [
+        { "gate_code": "ND1", "gate_name": "Anna Salai Exit", "latitude": 13.0453, "longitude": 80.2470, "road_type": "main_road", "lighting_score": 0.81 },
+        { "gate_code": "ND2", "gate_name": "Lattice Bridge Road Exit", "latitude": 13.0447, "longitude": 80.2478, "road_type": "inner_road", "lighting_score": 0.70 }
+      ]
+    },
+    {
+      "name": "Saidapet",
+      "line_code": "Blue",
+      "latitude": 13.0374,
+      "longitude": 80.2363,
+      "popularity_index": 0.76,
+      "exits": [
+        { "gate_code": "SP1", "gate_name": "GST Road Exit", "latitude": 13.0377, "longitude": 80.2359, "road_type": "main_road", "lighting_score": 0.80 },
+        { "gate_code": "SP2", "gate_name": "Rajaji Salai Exit", "latitude": 13.0371, "longitude": 80.2367, "road_type": "inner_road", "lighting_score": 0.70 }
+      ]
+    },
+    {
+      "name": "Little Mount",
+      "line_code": "Blue",
+      "latitude": 13.0277,
+      "longitude": 80.2258,
+      "popularity_index": 0.70,
+      "exits": [
+        { "gate_code": "LM1", "gate_name": "Mount Road Exit", "latitude": 13.0280, "longitude": 80.2254, "road_type": "main_road", "lighting_score": 0.79 },
+        { "gate_code": "LM2", "gate_name": "Inner Ring Road Exit", "latitude": 13.0274, "longitude": 80.2262, "road_type": "inner_road", "lighting_score": 0.68 }
+      ]
+    },
+    {
       "name": "Guindy",
       "line_code": "Blue",
       "latitude": 13.0089,
       "longitude": 80.2127,
       "popularity_index": 0.82,
       "exits": [
-        {
-          "gate_code": "G1",
-          "gate_name": "GST Road Exit",
-          "latitude": 13.0092,
-          "longitude": 80.2122,
-          "road_type": "main_road",
-          "lighting_score": 0.88
-        },
-        {
-          "gate_code": "G2",
-          "gate_name": "Industrial Estate Exit",
-          "latitude": 13.0084,
-          "longitude": 80.2133,
-          "road_type": "inner_road",
-          "lighting_score": 0.69
-        }
+        { "gate_code": "G1", "gate_name": "GST Road Exit", "latitude": 13.0092, "longitude": 80.2122, "road_type": "main_road", "lighting_score": 0.88 },
+        { "gate_code": "G2", "gate_name": "Industrial Estate Exit", "latitude": 13.0084, "longitude": 80.2133, "road_type": "inner_road", "lighting_score": 0.69 }
       ]
     },
     {
@@ -33,124 +250,48 @@
       "longitude": 80.2013,
       "popularity_index": 0.78,
       "exits": [
-        {
-          "gate_code": "A1",
-          "gate_name": "Airport Link Exit",
-          "latitude": 13.0051,
-          "longitude": 80.201,
-          "road_type": "main_road",
-          "lighting_score": 0.84
-        },
-        {
-          "gate_code": "A2",
-          "gate_name": "Suburban Exit",
-          "latitude": 13.0042,
-          "longitude": 80.2019,
-          "road_type": "inner_road",
-          "lighting_score": 0.67
-        }
+        { "gate_code": "A1", "gate_name": "Airport Link Exit", "latitude": 13.0051, "longitude": 80.2010, "road_type": "main_road", "lighting_score": 0.84 },
+        { "gate_code": "A2", "gate_name": "Suburban Exit", "latitude": 13.0042, "longitude": 80.2019, "road_type": "inner_road", "lighting_score": 0.67 }
       ]
     },
     {
-      "name": "Vadapalani",
-      "line_code": "Green",
-      "latitude": 13.0507,
-      "longitude": 80.2124,
-      "popularity_index": 0.75,
+      "name": "Nanganallur Road",
+      "line_code": "Blue",
+      "latitude": 12.9987,
+      "longitude": 80.1963,
+      "popularity_index": 0.68,
       "exits": [
-        {
-          "gate_code": "V1",
-          "gate_name": "Forum Mall Exit",
-          "latitude": 13.0509,
-          "longitude": 80.2118,
-          "road_type": "main_road",
-          "lighting_score": 0.85
-        },
-        {
-          "gate_code": "V2",
-          "gate_name": "Arcot Road Exit",
-          "latitude": 13.0504,
-          "longitude": 80.2129,
-          "road_type": "main_road",
-          "lighting_score": 0.8
-        }
+        { "gate_code": "NR1", "gate_name": "Nanganallur Main Exit", "latitude": 12.9990, "longitude": 80.1959, "road_type": "main_road", "lighting_score": 0.77 },
+        { "gate_code": "NR2", "gate_name": "Residential Exit", "latitude": 12.9984, "longitude": 80.1967, "road_type": "inner_road", "lighting_score": 0.65 }
       ]
     },
     {
-      "name": "Egmore",
-      "line_code": "Green",
-      "latitude": 13.0808,
-      "longitude": 80.2614,
-      "popularity_index": 0.86,
+      "name": "Meenambakkam",
+      "line_code": "Blue",
+      "latitude": 12.9885,
+      "longitude": 80.1838,
+      "popularity_index": 0.72,
       "exits": [
-        {
-          "gate_code": "E1",
-          "gate_name": "Railway Station Exit",
-          "latitude": 13.0812,
-          "longitude": 80.2618,
-          "road_type": "main_road",
-          "lighting_score": 0.9
-        },
-        {
-          "gate_code": "E2",
-          "gate_name": "Pantheon Road Exit",
-          "latitude": 13.0803,
-          "longitude": 80.2608,
-          "road_type": "main_road",
-          "lighting_score": 0.79
-        }
+        { "gate_code": "MB1", "gate_name": "Airport Road Exit", "latitude": 12.9888, "longitude": 80.1834, "road_type": "main_road", "lighting_score": 0.82 },
+        { "gate_code": "MB2", "gate_name": "GST Road Exit", "latitude": 12.9882, "longitude": 80.1842, "road_type": "main_road", "lighting_score": 0.75 }
       ]
     },
     {
-      "name": "CMBT",
-      "line_code": "Green",
-      "latitude": 13.0695,
-      "longitude": 80.2087,
-      "popularity_index": 0.88,
+      "name": "Airport",
+      "line_code": "Blue",
+      "latitude": 12.9943,
+      "longitude": 80.1710,
+      "popularity_index": 0.90,
       "exits": [
-        {
-          "gate_code": "C1",
-          "gate_name": "Bus Terminus Exit",
-          "latitude": 13.0698,
-          "longitude": 80.2092,
-          "road_type": "main_road",
-          "lighting_score": 0.87
-        },
-        {
-          "gate_code": "C2",
-          "gate_name": "100 Feet Road Exit",
-          "latitude": 13.0691,
-          "longitude": 80.2082,
-          "road_type": "main_road",
-          "lighting_score": 0.82
-        }
+        { "gate_code": "AP1", "gate_name": "Domestic Terminal Exit", "latitude": 12.9946, "longitude": 80.1706, "road_type": "main_road", "lighting_score": 0.95 },
+        { "gate_code": "AP2", "gate_name": "International Terminal Exit", "latitude": 12.9940, "longitude": 80.1714, "road_type": "main_road", "lighting_score": 0.95 }
       ]
     }
   ],
   "cab_providers": [
-    {
-      "name": "Uber",
-      "base_fare": 70,
-      "per_km_rate": 17.5,
-      "demand_multiplier": 1.0
-    },
-    {
-      "name": "Ola",
-      "base_fare": 65,
-      "per_km_rate": 16.5,
-      "demand_multiplier": 1.0
-    },
-    {
-      "name": "Rapido",
-      "base_fare": 55,
-      "per_km_rate": 15,
-      "demand_multiplier": 1.0
-    },
-    {
-      "name": "Namma Yatri",
-      "base_fare": 60,
-      "per_km_rate": 15.8,
-      "demand_multiplier": 1.0
-    }
+    { "name": "Uber", "base_fare": 70, "per_km_rate": 17.5, "demand_multiplier": 1.0 },
+    { "name": "Ola", "base_fare": 65, "per_km_rate": 16.5, "demand_multiplier": 1.0 },
+    { "name": "Rapido", "base_fare": 55, "per_km_rate": 15, "demand_multiplier": 1.0 },
+    { "name": "Namma Yatri", "base_fare": 60, "per_km_rate": 15.8, "demand_multiplier": 1.0 }
   ]
 }
